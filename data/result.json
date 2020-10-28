@@ -1,0 +1,14 @@
+{
+  "series": 5006,
+  "number": 1111,
+  "childrenList": [
+    {
+      "name": "Eva",
+      "age": 5
+    },
+    {
+      "name": "Petr",
+      "age": 8
+    }
+  ]
+}

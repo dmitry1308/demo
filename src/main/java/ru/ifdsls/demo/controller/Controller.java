@@ -1,76 +1,51 @@
 package ru.ifdsls.demo.controller;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.ifdsls.demo.dataPerson.Children;
 import ru.ifdsls.demo.dataPerson.Passport;
-import ru.ifdsls.demo.parser.JSonFileParser;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
+@CrossOrigin
+@RequestMapping("passport")
 public class Controller {
-    @GetMapping("/validate/passportString")
-    public ResponseEntity<String> parseDataPersonAndReturnString(@RequestParam("path") String sourcePath) throws FileNotFoundException, JsonProcessingException {
-        JsonObject parsedObject = new JSonFileParser().parse(sourcePath);
-        Passport passport = getPassportFields(parsedObject);
+    @PostMapping
+    public ResponseEntity<Passport> parseDataPersonAndReturnEntity(@RequestBody Passport passport) {
 
-        return ResponseEntity.ok(passport.toString());
+        Passport checkedPassport = checkedPassport(passport);
+        return ResponseEntity.ok(checkedPassport);
     }
 
-    @GetMapping("/validate/passportEntity")
-    public ResponseEntity<Passport> parseDataPersonandReturnEntity(@RequestParam("path") String sourcePath) throws FileNotFoundException, JsonProcessingException {
-        JsonObject parsedObject = new JSonFileParser().parse(sourcePath);
-        Passport passport = getPassportFields(parsedObject);
+    private Passport checkedPassport(Passport passport) {
+        Passport checkedPassport = new Passport();
 
-        return ResponseEntity.ok(passport);
-    }
-
-
-    public Passport getPassportFields(JsonObject jsonObject) throws JsonProcessingException {
-        JsonObject jSonPassport = getJsonPassport(jsonObject);
-
-        int series = jSonPassport.get("series").getAsInt();
-
-        int number = 0;
-        if (!jSonPassport.get("number").isJsonNull()) {
-            number = jSonPassport.get("number").getAsInt();
+        if (passport != null) {
+            String series = passport.getSeries();
+            if (series != null) {
+                if (isMatches(series)) {
+                    checkedPassport.setSeries(series);
+                }
+            } else {
+                checkedPassport.setSeries("");
+            }
+            String number = passport.getNumber();
+            if (number != null) {
+                if (isMatches(number)) {
+                    checkedPassport.setNumber(number);
+                }
+            } else {
+                checkedPassport.setNumber("");
+            }
         }
-
-        List<Children> children = getChildren(jSonPassport);
-
-        Passport passport = new Passport(series, number);
-        System.out.println(passport);
-        return passport;
+        return checkedPassport;
     }
 
-    private List<Children> getChildren(JsonObject jSonPassport) {
-        JsonArray jSonChildrenList = jSonPassport.get("children").getAsJsonArray();
-
-        ArrayList<Children> childrenList = new ArrayList<>();
-        for (int i = 0; i < jSonChildrenList.size(); i++) {
-            JsonObject jSonChildren = (JsonObject) jSonChildrenList.get(i);
-            String name = jSonChildren.get("name").getAsString();
-            int age = jSonChildren.get("age").getAsInt();
-            Children children = new Children(name, age);
-            childrenList.add(children);
-        }
-        return childrenList;
+    private boolean isMatches(String series) {
+        return series.matches("[-+]?\\d+");
     }
 
-    private JsonObject getJsonPassport(JsonObject jsonObject) {
-        return jsonObject.getAsJsonObject("personData").getAsJsonObject("passport");
-    }
 }

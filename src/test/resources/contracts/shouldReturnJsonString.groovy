@@ -1,11 +1,12 @@
 package contracts
 
 import org.springframework.cloud.contract.spec.Contract
+
 Contract.make {
     description "should return JSon String"
-    request{
+    request {
         method GET()
-        url("/validate/passportEntity") {
+        url("passport") {
             queryParameters {
                 parameter("path", "data/DataDmitry.json")
             }
@@ -14,8 +15,8 @@ Contract.make {
     response {
         body('''
           {
-            "series":5006,
-            "number": 1111
+            "series":"1111",
+            "number":"2222",
           }
           ''')
         status 200

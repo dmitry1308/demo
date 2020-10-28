@@ -4,31 +4,25 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
 public class Passport {
-    private int series;
-    private int number;
-    private List<Children> childrenList;
+    private String series;
+    private String number;
+
 
     public Passport() {
     }
 
-    public Passport(int series, int number) {
+    public Passport(String series, String number) {
         this.series = series;
         this.number = number;
     }
-
-    public Passport(int series, int number, List<Children> childrenList) {
-        this.series = series;
-        this.number = number;
-        this.childrenList = childrenList;
-    }
-
 
     @Override
     public String toString() {
-        return "Passport{" + "series=" + series + ", number=" + number + ", childrenList=" + childrenList + '}';
+        return "Passport{" + "series='" + series + '\'' + ", number='" + number + '\'' + '}';
     }
 }
