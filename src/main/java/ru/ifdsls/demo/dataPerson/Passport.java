@@ -2,27 +2,25 @@ package ru.ifdsls.demo.dataPerson;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
-import java.util.Objects;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Getter
 @Setter
 public class Passport {
-    private String series;
-    private String number;
+    private String a1;
+    private String a2;
 
 
     public Passport() {
     }
 
     public Passport(String series, String number) {
-        this.series = series;
-        this.number = number;
+        this.a1 = series;
+        this.a2 = number;
     }
 
     @Override
     public String toString() {
-        return "Passport{" + "series='" + series + '\'' + ", number='" + number + '\'' + '}';
+        return "Passport{" + "series='" + a1 + '\'' + ", number='" + a2 + '\'' + '}';
     }
 }

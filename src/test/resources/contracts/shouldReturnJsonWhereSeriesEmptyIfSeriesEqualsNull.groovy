@@ -2,7 +2,6 @@ package contracts
 
 import org.springframework.cloud.contract.spec.Contract
 
-
 Contract.make {
     description "should return JSon String"
     request {
@@ -21,7 +20,7 @@ Contract.make {
     response {
         body('''
           {
-            "series":"1111",
+            "series": "",
             "number":"2222",
           }
           ''')

@@ -11,7 +11,7 @@ import ru.ifdsls.demo.dataPerson.Passport;
 
 @RestController
 @CrossOrigin
-@RequestMapping("passport")
+@RequestMapping("/passport")
 public class Controller {
     @PostMapping
     public ResponseEntity<Passport> parseDataPersonAndReturnEntity(@RequestBody Passport passport) {
@@ -24,21 +24,21 @@ public class Controller {
         Passport checkedPassport = new Passport();
 
         if (passport != null) {
-            String series = passport.getSeries();
+            String series = passport.getA1();
             if (series != null) {
                 if (isMatches(series)) {
-                    checkedPassport.setSeries(series);
+                    checkedPassport.setA1(series);
                 }
             } else {
-                checkedPassport.setSeries("");
+                checkedPassport.setA1("");
             }
-            String number = passport.getNumber();
+            String number = passport.getA2();
             if (number != null) {
                 if (isMatches(number)) {
-                    checkedPassport.setNumber(number);
+                    checkedPassport.setA2(number);
                 }
             } else {
-                checkedPassport.setNumber("");
+                checkedPassport.setA2("");
             }
         }
         return checkedPassport;
