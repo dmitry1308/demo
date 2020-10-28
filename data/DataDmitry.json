@@ -1,0 +1,20 @@
+{
+  "personData": {
+    "passport": {
+      "series": 5006,
+      "number": null,
+      "first name": "Dmitry",
+      "second name": "Shepin",
+      "children": [
+        {
+          "name": "Eva",
+          "age": 5
+        },
+        {
+          "name": "Petr",
+          "age": 8
+        }
+      ]
+    }
+  }
+}

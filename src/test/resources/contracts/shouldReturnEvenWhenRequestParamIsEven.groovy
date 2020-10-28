@@ -7,12 +7,17 @@ Contract.make {
         method GET()
         url("/validate/prime-number") {
             queryParameters {
-                parameter("number", "2")
+                parameter("number", "data/DataDmitry.json")
             }
         }
     }
     response {
-        body("Even")
+        body('''
+          {
+            "series":5006,
+            "number": 1111
+          }
+          ''')
         status 200
     }
 }
