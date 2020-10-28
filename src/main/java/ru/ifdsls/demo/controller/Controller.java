@@ -1,6 +1,8 @@
 package ru.ifdsls.demo.controller;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -20,8 +22,16 @@ import java.util.List;
 
 @RestController
 public class Controller {
-    @GetMapping("/validate/prime-number")
-    public ResponseEntity<Passport> parseDataPerson(@RequestParam("number") String sourcePath) throws FileNotFoundException {
+    @GetMapping("/validate/passportString")
+    public ResponseEntity<String> parseDataPersonAndReturnString(@RequestParam("path") String sourcePath) throws FileNotFoundException, JsonProcessingException {
+        JsonObject parsedObject = new JSonFileParser().parse(sourcePath);
+        Passport passport = getPassportFields(parsedObject);
+
+        return ResponseEntity.ok(passport.toString());
+    }
+
+    @GetMapping("/validate/passportEntity")
+    public ResponseEntity<Passport> parseDataPersonandReturnEntity(@RequestParam("path") String sourcePath) throws FileNotFoundException, JsonProcessingException {
         JsonObject parsedObject = new JSonFileParser().parse(sourcePath);
         Passport passport = getPassportFields(parsedObject);
 
@@ -29,7 +39,7 @@ public class Controller {
     }
 
 
-    public Passport getPassportFields(JsonObject jsonObject) {
+    public Passport getPassportFields(JsonObject jsonObject) throws JsonProcessingException {
         JsonObject jSonPassport = getJsonPassport(jsonObject);
 
         int series = jSonPassport.get("series").getAsInt();
@@ -47,7 +57,7 @@ public class Controller {
     }
 
     private List<Children> getChildren(JsonObject jSonPassport) {
-        JsonArray jSonChildrenList = jSonPassport.get("Children").getAsJsonArray();
+        JsonArray jSonChildrenList = jSonPassport.get("children").getAsJsonArray();
 
         ArrayList<Children> childrenList = new ArrayList<>();
         for (int i = 0; i < jSonChildrenList.size(); i++) {
