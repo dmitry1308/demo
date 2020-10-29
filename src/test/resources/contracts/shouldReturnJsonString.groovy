@@ -7,16 +7,14 @@ Contract.make {
     description "should return JSon String"
     request {
         method POST()
+
+        url("/passport")
+
         headers {
             contentType(applicationJson())
         }
-        body('''
-          {
-            "series":"1111",
-            "number":"2222",
-          }
-          ''')
-        url("/passport")
+
+        body(file("DataDmitry.json"))
     }
     response {
         body('''
